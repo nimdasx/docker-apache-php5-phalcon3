@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+    web:
+        build : .
+        container_name: php5
+        image: nimdasx/sf-php-5:latest
+        ports:
+            - 80:80
+        volumes:
+            - /Users/sofyan/Dev/php:/var/www/html
+        networks:
+            - sf_network
+        restart: unless-stopped
+networks:
+    sf_network:
+        name: sf_network
