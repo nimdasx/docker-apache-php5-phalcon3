@@ -1,4 +1,4 @@
-FROM php:5.6.40-apache
+FROM php:5.6.40-apache-stretch
 
 LABEL maintainer="nimdasx@gmail.com"
 LABEL description="Apache PHP 5.6.40 Phalcon 3.4.5"
@@ -11,6 +11,11 @@ RUN apt-get -y update \
 && apt-get install -y \
 unzip \
 libpng-dev \
+gnupg \
+gnupg2 \
+gnupg1 \
+apt-transport-https \
+ca-certificates \
 && rm -rf /var/lib/apt/lists/*
 
 #install phalcon
@@ -32,3 +37,17 @@ COPY php-nimdasx.ini /usr/local/etc/php/conf.d/php-nimdasx.ini
 # apache
 RUN a2enmod rewrite
 RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/-Indexes/+Indexes/' /etc/apache2/conf-enabled/docker-php.conf
+
+#sqlsrv
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/debian/9/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+    && apt-get update \
+    && ACCEPT_EULA=Y apt-get install -y \
+    msodbcsql17 \
+    mssql-tools \
+    unixodbc-dev \
+    libgssapi-krb5-2 \
+    && rm -rf /var/lib/apt/lists/* \
+    && pecl install sqlsrv pdo_sqlsrv \
+    && docker-php-ext-enable sqlsrv pdo_sqlsrv \
+    && sed -i 's/TLSv1.2/TLSv1.0/g' /etc/ssl/openssl.cnf
