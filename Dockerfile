@@ -16,6 +16,10 @@ gnupg2 \
 gnupg1 \
 apt-transport-https \
 ca-certificates \
+dialog \
+apt-utils \
+freetds-common \
+libsybdb5 \
 && rm -rf /var/lib/apt/lists/*
 
 #install phalcon
@@ -39,15 +43,34 @@ RUN a2enmod rewrite
 RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/-Indexes/+Indexes/' /etc/apache2/conf-enabled/docker-php.conf
 
 #sqlsrv
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-    && curl https://packages.microsoft.com/config/debian/9/prod.list > /etc/apt/sources.list.d/mssql-release.list \
-    && apt-get update \
+#RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+#    && curl https://packages.microsoft.com/config/debian/9/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+#    && apt-get update \
+#    && ACCEPT_EULA=Y apt-get install -y \
+#    msodbcsql17 \
+#    mssql-tools \
+#    unixodbc-dev \
+#    libgssapi-krb5-2 \
+#    && rm -rf /var/lib/apt/lists/* \
+#    && pecl install sqlsrv pdo_sqlsrv \
+#    && docker-php-ext-enable sqlsrv pdo_sqlsrv \
+#    && sed -i 's/TLSv1.2/TLSv1.0/g' /etc/ssl/openssl.cnf
+
+#sql server
+#sipkd.adapter = PDO_MSSQL
+#sipkd.params.pdoType = dblib
+RUN apt-get update \
     && ACCEPT_EULA=Y apt-get install -y \
-    msodbcsql17 \
-    mssql-tools \
-    unixodbc-dev \
-    libgssapi-krb5-2 \
-    && rm -rf /var/lib/apt/lists/* \
-    && pecl install sqlsrv pdo_sqlsrv \
-    && docker-php-ext-enable sqlsrv pdo_sqlsrv \
-    && sed -i 's/TLSv1.2/TLSv1.0/g' /etc/ssl/openssl.cnf
+    freetds-bin \
+    freetds-dev \
+    freetds-common \
+    libct4 \
+    libsybdb5 \
+    tdsodbc \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libmcrypt-dev \
+    zlib1g-dev \
+    libc-client-dev \
+    && ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib/ \
+    && docker-php-ext-install mssql pdo_dblib
