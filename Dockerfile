@@ -17,7 +17,7 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime \
     && a2enmod rewrite \
     && sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/-Indexes/+Indexes/' /etc/apache2/conf-enabled/docker-php.conf \
     && ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib/ \
-    && docker-php-ext-install pdo_mysql gd mssql pdo_dblib
+    && docker-php-ext-install pdo_mysql gd mssql pdo_dblib zip
 
 #phalcon
 COPY cphalcon-3.4.5.zip .

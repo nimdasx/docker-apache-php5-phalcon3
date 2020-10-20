@@ -1,6 +1,6 @@
 # apache2 php5
 from php:5.6.40-apache basis debian stretch  
-fitur : apache2 php5 mysql mssql phalcon gd  
+fitur : apache2 php5 mysql mssql phalcon gd zip  
 
 ## catatan  
 docker build --tag nimdasx/sf-php-5 .  
