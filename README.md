@@ -1,14 +1,18 @@
-# apache2 php5
-from php:5.6.40-apache basis debian stretch  
-fitur : apache2 php5 mysql mssql phalcon gd zip  
+```
+# build dan push ke github
+docker build --tag ghcr.io/nimdasx/apache-php5-phalcon3 .
+docker push ghcr.io/nimdasx/apache-php5-phalcon3
 
-## catatan  
-docker build --tag nimdasx/sf-php-5 .  
-docker push nimdasx/sf-php-5  
+# build dan push ke docker hub
+docker build --tag nimdasx/apache-php5-phalcon3 .
+docker push nimdasx/apache-php5-phalcon3
 
-## run
-docker run -d -p 80:80 -v /Users/sofyan/Dev/php:/var/www/html --name terserah nimdasx/sf-php-5  
+# pakai buildx
+docker buildx build --platform linux/amd64 --tag nimdasx/apache-php5-phalcon3 --push .
 
-## sql server konfig di zendframework1  
+# sql server konfig di zendframework1  
 sipkd.adapter = PDO_MSSQL  
 sipkd.params.pdoType = dblib  
+
+dulu image ini namanya nimdasx/sf-php-5
+```

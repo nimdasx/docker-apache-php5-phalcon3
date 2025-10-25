@@ -1,0 +1,7 @@
+services:
+    elang:
+        image: nimdasx/apache-php5-phalcon3
+        ports:
+            - 21425:80
+        volumes:
+            - .:/var/www/html
