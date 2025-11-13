@@ -11,7 +11,7 @@ COPY 000-default.conf /etc/apache2/sites-enabled/000-default.conf
 COPY docker-php.conf /etc/apache2/conf-enabled/docker-php.conf
 
 #cemacem
-RUN a2enmod rewrite remoteip && \
+RUN a2enmod rewrite remoteip headers && \
     ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 
 # perbarui apt stretch pindah ke archive karena sudah tidak di support
@@ -34,13 +34,14 @@ RUN apt-get -y update && \
     gnupg1 \
     git \
     freetds-dev \
+    libmcrypt-dev \
     libsybdb5 && \
     ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib/ && \
     rm -rf /var/lib/apt/lists/*
 
 # php ext 
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ && \
-    docker-php-ext-install zip mysqli pdo_mysql pdo_pgsql gd mssql pdo_dblib
+    docker-php-ext-install zip mysqli pdo_mysql pdo_pgsql gd mssql pdo_dblib mcrypt
 
 # phalcon
 COPY cphalcon-3.4.5.zip /usr/local/src/
